@@ -18,16 +18,28 @@ Here is Hands-on setup via using minikube cluster local setup(Kind)
 
 prepare MySQL with PersistentVolume and initial Database
 - k8s/mysql.yaml
+
 setup phpmyadmin deployment and service
 - k8s/pma.yaml 
+
 setup heartbeat control system
 - k8s/hbapi.yaml
+
 setup runner with 3 replicas   
 - k8s/hbclient.yaml
 
 ## Extra setup steps on Host via ansible
+
 portainer:
 - ansible/portainer.yml
+
 local HBclient
 - ansible/installHB.yml
 
+## Screenshots - Results
+
+web list
+![App Screenshot](k8s/img/runner.png)
+
+Pods and services
+![App Screenshot](k8s/img/result.png)
