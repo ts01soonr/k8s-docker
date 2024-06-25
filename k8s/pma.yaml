@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pma
+  name: pma
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pma
+  # strategy:
+  #   type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pma
+    spec:
+      containers:
+      - image: phpmyadmin/phpmyadmin
+        name: phpmyadmin
+        ports:
+        - containerPort: 80
+        env:
+        - name: PMA_HOST
+          value: mysql
+        - name: PMA_PORT
+          value: "3306"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: root_password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin
+spec:
+  type: NodePort
+  selector:
+    app: pma
+  ports:
+    - nodePort: 32001
+      port: 80
+      targetPort: 80
+#spec:
+#  type: ClusterIP
+#  selector:
+#    app: pma
+#  ports:
+#  - protocol: TCP
+#    port: 80
+#    targetPort: 80

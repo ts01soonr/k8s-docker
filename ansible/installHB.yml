@@ -1,0 +1,35 @@
+- name: Play with ansible
+  hosts: localhost
+  become: True
+  vars:
+    repo_url: "https://github.com/ts01soonr/HBsys.git"
+    repo_dest: "/opt/HBsys"
+    install_script: "install.sh"
+    service_name: "asoonr.service"
+  tasks:
+
+    - name: Check Service
+      stat: path=/lib/systemd/system/{{service_name}}
+      register: service_status
+    - name: Output-Vaule
+      debug:
+        var: service_status
+    - name: Install block
+      block:
+        - name: Update apt-get repo and cache
+          apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+        - name: Install Java 11
+          apt:
+            name: openjdk-11-jdk
+            state: present
+        - name: Clone the HBsys repository
+          git:
+            repo: "{{ repo_url }}"
+            dest: "{{ repo_dest }}"
+            update: yes
+        - name: Run the install script
+          command: "bash {{ repo_dest }}/{{ install_script }}"
+          args:
+            chdir: "{{ repo_dest }}"
+      when: service_status.stat.exists == false
