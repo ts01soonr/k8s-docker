@@ -163,4 +163,4 @@ _Let’s Encrypt is a free, automated, and open Certificate Authority._
     192.168.33.12   aws.35cloud.com
 
 
-![App Screenshot](k8s/img/ssl.png)
+![App Screenshot](/k8s/img/ssl.png)
