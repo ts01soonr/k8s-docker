@@ -1,0 +1,22 @@
+
+hcp auth login --client-id=bXrZk47cXSzvgnlzFQc36rzdJ1271DNg --client-secret=URNjzJItXyw5rtelYLmdU-YTpYjiq1miepzCgnb-hUaMOQI91EyNVUNrDJRIWR4q
+
+hcp vault-secrets secrets list
+
+hcp vault-secrets secrets open
+
+call.sh
+-----------
+#!/bin/bash
+echo "$1\nbye\n" | nc localhost 8888
+--------
+
+
+-----------------
+#!/bin/bash
+export HOME=/root
+hcp vault-secrets secrets open docker
+------------------
+
+
+

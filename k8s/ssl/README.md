@@ -6,7 +6,7 @@ _Let’s Encrypt is a free, automated, and open Certificate Authority._
 
 ```bash
 
-  sudo apt-get update \
+  sudo apt-get update
   sudo apt-get install software-properties-common
   sudo add-apt-repository ppa:certbot/certbot
   sudo apt-get update

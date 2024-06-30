@@ -1,0 +1,42 @@
+#play with basic nc command and reboot machine
+- name: Play with ansible
+  hosts: webservers
+  become: True
+  gather_facts: yes
+  
+  tasks:
+
+    - name: Start the service
+      service:
+        name: asoonr        # Replace with the name of your service
+        state: restarted     # Ensure the service is started
+
+    - name: Send command
+      shell: echo $'\nip\nbye' | nc localhost 8888
+      register: nc_output
+      ignore_errors: yes 
+      
+    - name: Print nc output
+      debug:
+        var: nc_output.stdout_lines
+
+    - name: Reboot the server
+      reboot:
+        msg: "Reboot initiated by Ansible"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+
+    - name: Start the service
+      service:
+        name: asoonr        # Replace with the name of your service
+        state: restarted     # Ensure the service is started
+
+    - name: Send command
+      shell: echo $'\nip public\nbye' | nc localhost 8888
+      register: nc_output    
+
+    - name: Print nc output
+      debug:
+        var: nc_output.stdout_lines

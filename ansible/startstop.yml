@@ -1,0 +1,75 @@
+- name: Play with ansible
+  hosts: localhost
+  become: True
+  gather_facts: yes
+  tasks:
+
+    - name: Start the service
+      service:
+        name: asoonr        # Replace with the name of your service
+        state: started     # Ensure the service is started
+
+    - name: Send command [ip]
+      shell: echo $'\nip\nip public\nbye' | nc localhost 8888
+      register: nc_output
+      ignore_errors: yes
+
+    - name: Print nc output
+      debug:
+        var: nc_output.stdout_lines
+
+    - name: Check status of asoonr service
+      shell: systemctl is-active asoonr
+      register: asoonr_status
+
+    - name: Print asoonr service status
+      debug:
+        msg: "asoonr service is {{ asoonr_status.stdout }}"
+
+    - name: Stop the service
+      service:
+        name: asoonr        # Replace with the name of your service
+        state: stopped     # Ensure the service is stopped
+
+    - name: Sleep for 5 seconds
+      pause:
+        seconds: 5
+
+    - name: Send command [ip] after stop
+      shell: echo $'\nip\nip public\nbye' | nc localhost 8888
+      register: nc_output
+      ignore_errors: yes
+
+    - name: Print nc output after stop
+      debug:
+        var: nc_output.stdout_lines
+
+
+    - name: Check status after stop asoonr service
+      shell: systemctl status asoonr
+      register: asoonr_status2
+      ignore_errors: yes  # Continue even if this task fails
+
+
+    - name: Print asoonr service status after stop
+      debug:
+        msg: "asoonr service status {{ asoonr_status2 }}"
+
+
+    - name: Start the service
+      service:
+        name: asoonr        # Replace with the name of your service
+        state: started     # Ensure the service is started
+
+    - name: Sleep for 5 seconds
+      pause:
+        seconds: 5
+
+    - name: Send command
+      shell: echo $'\nip\nip public\nbye' | nc localhost 8888
+      register: nc_output
+      ignore_errors: yes
+
+    - name: Print nc output
+      debug:
+        var: nc_output.stdout_lines

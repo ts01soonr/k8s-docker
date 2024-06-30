@@ -1,0 +1,38 @@
+#play with basic ansible-loop and wait_for command
+- hosts: localhost
+  gather_facts: false
+
+  vars:
+    - port_number: 8888
+    - target_hosts: [localhost,13.60.21.119]
+  tasks:
+
+  - name: Send command
+    shell: echo $'\nwho\nbye' | nc localhost 8888
+    register: nc_output
+    ignore_errors: yes
+
+  - name: Print nc output
+    debug:
+      var: nc_output
+
+  - name: check connectivity over port "{{ port_number }}"
+    ansible.builtin.wait_for:
+      host: "{{ item }}"
+      port: "{{ port_number }}"
+      timeout: 2
+    loop:  "{{ target_hosts }}"
+    register: connection_out
+    ignore_errors: yes
+
+  - name: Print Connect_out
+    debug:
+      var: connection_out['results']
+
+  - name: generate results spreadsheet
+    # save connection's ok to list
+    shell: echo "{{item['item']}}:{{ port_number}} has failed connection = {{ item['failed'] }}, state={{ item['state'] }}" >> tmp.txt
+    loop: "{{ connection_out['results'] }}"
+    # filter out fail connection
+    when: item.failed == False
+
