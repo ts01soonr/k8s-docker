@@ -1,0 +1,11 @@
+---
+- name: Run whoami command on all hosts
+  hosts: localhost
+  tasks:
+    - name: Execute whoami command
+      shell: whoami
+      register: whoami_output
+
+    - name: Print whoami output
+      debug:
+        msg: "The user is: {{ whoami_output.stdout }}"

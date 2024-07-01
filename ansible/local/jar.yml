@@ -1,0 +1,29 @@
+# execute soonr.jar command
+# ansible-playbook jar.yml -e "cmd='run whoami'"
+- name: Test soonr.jar command
+  hosts: localhost
+  gather_facts: false
+  vars:
+    - target_host: "localhost"
+    - port_number: "8888"
+    - cmd: "run ls -l"
+
+  tasks:
+
+  - name: check connection first
+    ansible.builtin.wait_for:
+      host: "{{ target_host }}"
+      port: "{{ port_number }}"
+      timeout: 2
+    register: connection_out
+
+  - name: Run soonr.jar command
+    soonrjar:
+      host: "{{ target_host }}"
+      port: "{{ port_number }}"
+      command: "{{ cmd }}"
+      new: false
+    register: testout
+  - name: dump test output
+    debug:
+      msg: '{{ testout }}'

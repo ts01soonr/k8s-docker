@@ -1,0 +1,21 @@
+- name: Display applications for each environments
+  hosts: localhost
+  vars:
+    apps_environments:
+      - app: webapp
+        environments:
+          - env: development
+            url: dev.example.com
+          - env: production
+            url: example.com
+      - app: api
+        environments:
+          - env: development
+            url: dev.api.example.com
+          - env: production
+            url: api.example.com
+  tasks:
+    - name: Display application for each environment
+      debug:
+        msg: "Displaying {{ item.0.app }} for {{ item.1.env }} environment with URL {{ item.1.url }}"
+      loop: "{{ query('subelements', apps_environments, 'environments') }}"
