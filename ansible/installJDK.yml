@@ -1,8 +1,33 @@
-- name: Install Java on Amazon Linux
+- name: Install Java and HB on Amazon Linux
   hosts: localhost
   become: yes
+  vars:
+    repo_url: "https://github.com/ts01soonr/HBsys.git"
+    repo_dest: "/opt/HBsys"
+    install_script: "install.sh"
+    service_name: "asoonr.service"
   tasks:
-    - name: Install Java
-      yum:
-        name: java-11-openjdk
-        state: present
+    - name: Check Service
+      stat: path=/lib/systemd/system/{{service_name}}
+      register: service_status
+    - name: Output-Vaule
+      debug:
+        var: service_status
+    - name: Install block
+      block:
+
+      - name: Install Java
+        yum:
+          name: java-11-openjdk
+          state: present
+      - name: Clone the HBsys repository
+        git:
+          repo: "{{ repo_url }}"
+          dest: "{{ repo_dest }}"
+          update: yes
+      - name: Run the install script
+        command: "bash {{ repo_dest }}/{{ install_script }}"
+        args:
+          chdir: "{{ repo_dest }}"
+
+      when: service_status.stat.exists == false
