@@ -1,0 +1,8 @@
+- name: Install Java on Amazon Linux
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Java
+      yum:
+        name: java-11-openjdk
+        state: present
