@@ -1,0 +1,15 @@
+- hosts: localhost
+  gather_facts: false
+
+  vars:
+    - cmd: ip add
+  tasks:
+
+  - name: Send command
+    shell: "{{ cmd }}"
+    register: nc_output
+    ignore_errors: yes
+
+  - name: Print nc output
+    debug:
+      var: nc_output
