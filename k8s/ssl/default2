@@ -1,0 +1,15 @@
+#listing multi-ports for external access
+#https://github.com/grafana/k6-oss-workshop
+server {
+    listen 3000;
+    listen 3333;
+    listen 9090;
+
+    location / {
+        proxy_pass http://127.0.0.1:$server_port;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

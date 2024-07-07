@@ -149,6 +149,7 @@ _Let’s Encrypt is a free, automated, and open Certificate Authority._
     ```bash
 
     sudo systemctl start nginx
+    sudo systemctl restart nginx
 
     ```
 
@@ -161,6 +162,8 @@ _Let’s Encrypt is a free, automated, and open Certificate Authority._
     add local VM's IP mapping into aws.35cloud.com
     
     192.168.33.12   aws.35cloud.com
+10. multi config
 
+    nano /etc/nginx/sites-available/default2
 
 ![App Screenshot](/k8s/img/ssl.png)
