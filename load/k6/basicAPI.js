@@ -23,7 +23,7 @@ export default function () {
     http.post('https://automationintesting.online/auth/login', JSON.stringify(login), {
     headers: { 'Content-Type': 'application/json' },
     });
-
+    //del - delete operation
     for (let i = 0; i < filteredQuery.length; i++) {
         const res = http.del(`https://automationintesting.online/message/${filteredQuery[i].id}`, null)
         console.log(res.status)
