@@ -19,3 +19,5 @@ K6_BROWSER_ENABLED=true k6 run <script-to-run>
 cd tests
 set "K6_BROWSER_HEADLESS=false" && k6 run tests\multiple-scenario.js
 ```
+## Advanced: K6 with Grafana
+![App Screenshot](/k8s/img/k6-grafana.png)
