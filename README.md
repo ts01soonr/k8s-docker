@@ -43,3 +43,13 @@ web list
 
 Pods and services
 ![App Screenshot](k8s/img/result.png)
+
+
+## Hands-on load testing
+
+- with Grafana-K6
+![App Screenshot](/k8s/img/k6-grafana.png)
+
+- with Apache-Jmeter
+
+![App Screenshot](screenshots/example.png)
