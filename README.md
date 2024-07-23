@@ -51,5 +51,4 @@ Pods and services
 ![App Screenshot](/k8s/img/k6-grafana.png)
 
 - with Apache-Jmeter
-
-![App Screenshot](screenshots/example.png)
+![App Screenshot](/load/jmeter/screenshots/example.png)
