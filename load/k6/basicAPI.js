@@ -20,9 +20,8 @@ export default function () {
 
     if (filteredQuery.length < 0) return
     //post - login
-    http.post('https://automationintesting.online/auth/login', JSON.stringify(login), {
-    headers: { 'Content-Type': 'application/json' },
-    });
+    //http.post('https://automationintesting.online/auth/login', JSON.stringify(login), { headers: { 'Content-Type': 'application/json' },});
+    //http.post('https://automationintesting.online/auth/login', JSON.stringify(login));
     //del - delete operation
     for (let i = 0; i < filteredQuery.length; i++) {
         const res = http.del(`https://automationintesting.online/message/${filteredQuery[i].id}`, null)
