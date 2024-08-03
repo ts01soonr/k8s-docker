@@ -16,7 +16,9 @@ https://kind.sigs.k8s.io/docs/user/quick-start/
 kind create cluster --config kind-multi-node.yaml 
 
 kind delete clusters --all
+
 kind create cluster --config kind-local.yaml
+
 ------
 kind: Cluster 
 apiVersion: kind.sigs.k8s.io/v1alpha3 
@@ -33,6 +35,12 @@ nodes:
 ------
 
 kind delete cluster --name
+
+# Running metric-server on Kind Kubernetes
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.5.0/components.yaml
+refer: https://gist.github.com/sanketsudake/a089e691286bf2189bfedf295222bd43
+kubectl patch deployment metrics-server -n kube-system --patch "$(cat metric-server-patch.yaml)"
 
 # kubectl
 
