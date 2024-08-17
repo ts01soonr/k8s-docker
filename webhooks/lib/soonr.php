@@ -1,99 +1,5 @@
 <?php
  
-/**
- * A simple class
- *
- * This is the long description for this class,
- * which can span as many lines as needed. It is
- * not required, whereas the short description is
- * necessary.
- *
- * It can also span multiple paragraphs if the
- * description merits that much verbiage.
- *
- * @author Jason Lengstorf <jason.lengstorf@ennuidesign.com>
- * @copyright 2010 Ennui Design
- * @license http://www.php.net/license/3_01.txt PHP License 3.01
- * #php7.4
- */
-
-//echo $_SESSION['username2'];
-//if($_SESSION['username2'] !=="soonr") header('Location:/index.php');
-
-class Telnet{
-  /**
-   * A public variable
-   *
-   * @var string stores data for the class
-   */
-  public $ip;
-  public $port;
-  public $msg;
-  public $S;  // socket
-  public $rc;
-  /**
-   * Sets $foo to a new value upon class instantiation
-   *
-   * @param string $val a value required for the class
-   * @return void
-   */
-  public function __construct($ip,$port,$tm)
-  {
-      $this->ip = $ip;
-	  $this->port = $port;
-	  $this->rc = @fsockopen($ip, $port, $errno, $errstr,$tm); 
-	  if (is_resource($this->rc)){
-		stream_set_timeout($this->rc, $tm);	
-		$this->msg = $this->read()."<br/><br/>";
-	  }
-	  else		 
-		$this->msg = "!!! It seems there is no connection to ".$ip.":".$port." !!!! <br/>";
-  }
-  public function __destruct()
-  {
-	  if (is_resource($this->rc)) fclose($this->rc); 
-  }
- 
-  public function isOK()
-  {
-	  return (bool) is_resource($this->rc);
-  }
-  public function send($var)
-  {
-	  if (is_resource($this->rc))
-		fputs($this->rc, $var."\r\n");
-  }
-  public function read()   // read single line
-  {
-	  if (is_resource($this->rc))
-		return fgets($this->rc, 128);
-  }
-  public function reads()   // read all line
-  {
-	 
-	  $line= $this->read();
-	  $msg= $line."<br/>";;
-	  while (strlen($line)) {
-		  
-		$line = $this->read();	
-		$msg = $msg . $line ."<br/>";
-		
-	  }
-      return $this->msg.$msg;	  
-  }
-  
-  public function dis()
-  {
-	  $this->send('bye');
-  }
-  public function SR($var)     // combine reader and writer
-  {
-	  $this->send($var);
-	  $this->dis();
-	  return $this->reads();
-  }
-}
-
 class DB{
 	
   public $rc;
@@ -102,11 +8,11 @@ class DB{
   public $isOK=false;
   public function __construct()
   {
-	  //example-db-setting
-	  $servername = "mysql";
-	  $username = "root";
-	  $password = "test";
-	  $dbname = "myDb";
+    //example-db-setting
+    $servername = "mysql";
+    $username = "root";
+    $password = "test";
+    $dbname = "myDb";
 	  $this -> isOK = false;
 	  $mysqli = new mysqli($servername, $username, $password, $dbname );
 	  // Check connection
@@ -190,7 +96,61 @@ function sortby($s,$o) {
 		default:
 			return " ";
 	}
-}	
+}
+function prettyPrint( $json )
+{
+    $result = '';
+    $level = 0;
+    $in_quotes = false;
+    $in_escape = false;
+    $ends_line_level = NULL;
+    $json_length = strlen( $json );
+
+    for( $i = 0; $i < $json_length; $i++ ) {
+        $char = $json[$i];
+        $new_line_level = NULL;
+        $post = "";
+        if( $ends_line_level !== NULL ) {
+            $new_line_level = $ends_line_level;
+            $ends_line_level = NULL;
+        }
+        if ( $in_escape ) {
+            $in_escape = false;
+        } else if( $char === '"' ) {
+            $in_quotes = !$in_quotes;
+        } else if( ! $in_quotes ) {
+            switch( $char ) {
+                case '}': case ']':
+                    $level--;
+                    $ends_line_level = NULL;
+                    $new_line_level = $level;
+                    break;
+
+                case '{': case '[':
+                    $level++;
+                case ',':
+                    $ends_line_level = $level;
+                    break;
+
+                case ':':
+                    $post = " ";
+                    break;
+
+                case " ": case "\t": case "\n": case "\r":
+                    $char = "";
+                    $ends_line_level = $new_line_level;
+                    $new_line_level = NULL;
+                    break;
+            }
+        } else if ( $char === '\\' ) {
+            $in_escape = true;
+        }
+        if( $new_line_level !== NULL ) {
+            $result .= "\n".str_repeat( "\t", $new_line_level );
+        }
+        $result .= $char.$post;
+    }
+}
 //$t = new Telnet('ghost10','23');
 //echo $t->SR('ps fwef')."<br/>";
 //unset($t);

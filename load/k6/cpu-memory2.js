@@ -8,7 +8,7 @@ let MemCount = new Trend("memory");
 let CPUCount = new Trend("cpu2");
 const BASE_URL = __ENV.BASE_URL || 'ws://localhost';
 
-const url = 'https://localhost:7196/api/v2';
+const url = 'https://localhost:5001/api/v2';
 //url = 'http://localhost:5196/api/v2';
 //url = 'https://localhost:5001/api/v2';
 export const options = {
@@ -79,7 +79,7 @@ export function mem_cpu() {
         //using websocket for measure cpu-memory
         const t = setInterval(() => {
             var p = 'VirtualBoxVM';
-            p = 'UnitTestCaseDemo';
+            p = 'SwaggerDemo';
             ws.send('!cpu2 '+p);
             sleep(1);
             ws.send('!mem2 '+p);
