@@ -29,6 +29,7 @@ set "K6_BROWSER_HEADLESS=false" && k6 run tests\multiple-scenario.js
 
 ## K6 with influxdb
 ![App Screenshot](screenshots/cpu-memory.png)
+- docker-compose up -d influxdb grafana
 - k6 run .\cpu-memory.js --out influxdb=http://192.168.33.12:8086/k6
 - using websoket to pull out the cpu and memory infomation
 - apply load action

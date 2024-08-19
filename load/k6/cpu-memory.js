@@ -7,7 +7,7 @@ import { Counter , Gauge, Rate, Trend } from "k6/metrics";
 let MemCount = new Trend("memory");
 let CPUCount = new Trend("cpu2");
 const GaugeContentSize = new Gauge('ContentSize');
-const BASE_URL = __ENV.BASE_URL || 'ws://localhost';
+const BASE_URL = __ENV.BASE_URL || 'ws://localhost:8080';
 export const options = {
     scenarios: {
         // per_vu_scenario: {

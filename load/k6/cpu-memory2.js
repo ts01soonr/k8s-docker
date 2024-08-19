@@ -6,7 +6,7 @@ import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
 import { Counter , Gauge, Rate, Trend } from "k6/metrics";
 let MemCount = new Trend("memory");
 let CPUCount = new Trend("cpu2");
-const BASE_URL = __ENV.BASE_URL || 'ws://localhost';
+const BASE_URL = __ENV.BASE_URL || 'ws://localhost:8080';
 
 const url = 'https://localhost:5001/api/v2';
 //url = 'http://localhost:5196/api/v2';
